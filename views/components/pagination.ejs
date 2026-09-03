@@ -1,0 +1,89 @@
+<% if (typeof pagination !== 'undefined' && pagination && pagination.totalPages > 1) { 
+    const current = parseInt(pagination.currentPage) || 1;
+    const totalPages = parseInt(pagination.totalPages) || 1;
+    const limit = parseInt(pagination.limit) || 10;
+    const search = pagination.search || '';
+    const date = pagination.date || '';
+    const startRecord = (current - 1) * limit + 1;
+    const endRecord = Math.min(current * limit, pagination.total);
+
+    function buildPageUrl(p) {
+        let url = baseUrl + '?page=' + p + '&limit=' + limit;
+        if (search) url += '&search=' + encodeURIComponent(search);
+        if (date) url += '&date=' + encodeURIComponent(date);
+        return url;
+    }
+%>
+<div class="pagination-wrapper">
+  <div class="pagination-info">
+    <span>Mostrando <strong><%= startRecord %></strong> - <strong><%= endRecord %></strong> de <strong><%= pagination.total %></strong> registros</span>
+    <select class="pagination-limit-select" onchange="location.href=this.value">
+      <% [10, 25, 50, 100].forEach(function(optLimit) { %>
+        <option value="<%= baseUrl %>?page=1&limit=<%= optLimit %><%= search ? '&search=' + encodeURIComponent(search) : '' %><%= date ? '&date=' + encodeURIComponent(date) : '' %>" <%= limit === optLimit ? 'selected' : '' %>>
+          <%= optLimit %> por página
+        </option>
+      <% }); %>
+    </select>
+  </div>
+
+  <div class="pagination-nav">
+    
+    <a href="<%= buildPageUrl(1) %>" class="pagination-btn <%= current === 1 ? 'disabled' : '' %>" title="Primera página">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon icon-tabler icons-tabler-outline icon-tabler-chevrons-left" viewBox="0 0 24 24"><path fill="none" stroke="none" d="M0 0h24v24H0z"/><path d="m11 7-5 5 5 5m6-10-5 5 5 5"/></svg>
+    </a>
+    
+    <a href="<%= buildPageUrl(current - 1) %>" class="pagination-btn <%= current === 1 ? 'disabled' : '' %>" title="Página anterior">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left" viewBox="0 0 24 24"><path fill="none" stroke="none" d="M0 0h24v24H0z"/><path d="m15 6-6 6 6 6"/></svg>
+    </a>
+
+    <% 
+      let startPage = Math.max(1, current - 2);
+      let endPage = Math.min(totalPages, current + 2);
+      if (startPage > 1) { %>
+        <a href="<%= buildPageUrl(1) %>" class="pagination-btn">1</a>
+        <% if (startPage > 2) { %>
+          <span style="padding: 0 4px; color: #94a3b8;">...</span>
+        <% } %>
+    <% } %>
+
+    <% for (let p = startPage; p <= endPage; p++) { %>
+      <a href="<%= buildPageUrl(p) %>" class="pagination-btn <%= p === current ? 'active' : '' %>">
+        <%= p %>
+      </a>
+    <% } %>
+
+    <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+          <span style="padding: 0 4px; color: #94a3b8;">...</span>
+        <% } %>
+        <a href="<%= buildPageUrl(totalPages) %>" class="pagination-btn"><%= totalPages %></a>
+    <% } %>
+
+    
+    <a href="<%= buildPageUrl(current + 1) %>" class="pagination-btn <%= current === totalPages ? 'disabled' : '' %>" title="Página siguiente">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right" viewBox="0 0 24 24"><path fill="none" stroke="none" d="M0 0h24v24H0z"/><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+    
+    <a href="<%= buildPageUrl(totalPages) %>" class="pagination-btn <%= current === totalPages ? 'disabled' : '' %>" title="Última página">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon icon-tabler icons-tabler-outline icon-tabler-chevrons-right" viewBox="0 0 24 24"><path fill="none" stroke="none" d="M0 0h24v24H0z"/><path d="m13 17 5-5-5-5M7 17l5-5-5-5"/></svg>
+    </a>
+  </div>
+</div>
+<% } else if (typeof pagination !== 'undefined' && pagination && pagination.total > 0) { 
+    const limit = pagination.limit;
+    const search = pagination.search || '';
+    const date = pagination.date || '';
+%>
+<div class="pagination-wrapper">
+  <div class="pagination-info">
+    <span>Mostrando <strong>1</strong> - <strong><%= pagination.total %></strong> de <strong><%= pagination.total %></strong> registros</span>
+    <select class="pagination-limit-select" onchange="location.href=this.value">
+      <% [10, 25, 50, 100].forEach(function(optLimit) { %>
+        <option value="<%= baseUrl %>?page=1&limit=<%= optLimit %><%= search ? '&search=' + encodeURIComponent(search) : '' %><%= date ? '&date=' + encodeURIComponent(date) : '' %>" <%= limit === optLimit ? 'selected' : '' %>>
+          <%= optLimit %> por página
+        </option>
+      <% }); %>
+    </select>
+  </div>
+</div>
+<% } %>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/img/logo-uv.svg" type="image/x-icon">
+  <title>Dashboard - UV Archiver</title>
+  <!-- Chart.js CDN para gráficos dinámicos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <%- include('components/sidebar.ejs') %>
+    <div class="container-user" id="container-user">
+      <h1 class="title">Bienvenido <%= user.nombre %>
+      </h1>
+      <p style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
+        Haz clic en el Icono
+        <span style="position:relative; display:inline-flex; align-items:center; width:1.1rem; height:1.1rem;">
+          <img src="/img/logo-uv.svg" alt="logo-uv" style="width:100%;height:100%;object-fit:contain;">
+        </span>
+        para ver más opciones de navegación.
+      </p>
+
+      <div class="main-content" style="flex-direction: column; justify-content: flex-start;">
+        <!-- Sección de Tarjetas de Métricas Dinámicas -->
+        <div class="metrics-section" id="metrics-container">
+          <!-- Se cargan vía AJAX en dashboard.components.js -->
+          <div class="greeting" style="justify-content: center; min-height: 100px;">Cargando métricas...</div>
+        </div>
+
+        <!-- Sección Central: Gráficos y Tablas -->
+        <div class="dashboard-middle">
+          <!-- Tarjeta del Gráfico -->
+          <div class="chart-card">
+            <h3 id="chart-title">Estadísticas de Carga</h3>
+            <div class="chart-container">
+              <canvas id="dashboardChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Actividades Recientes -->
+          <div class="table-card">
+            <h3 id="table-title">Mis Últimos Expedientes</h3>
+            <div style="width: 100%; overflow-x: auto; flex: 1;">
+              <table class="doc-table" id="recent-table">
+                <thead>
+                  <tr id="table-headers">
+                    <!-- Se cargan dinámicamente -->
+                    <th>Nombre</th>
+                    <th>Subido Por</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-table-body">
+                  <tr>
+                    <td colspan="3" style="text-align: center; padding: 20px;">Cargando historial reciente...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.currentUserRol = parseInt('<%= user.rol %>');
+      window.currentUserDept = parseInt('<%= user.id_departamento %>');
+    </script>
+    <script src="/js/components/sidebar.js"></script>
+    <script src="/js/components/dashboard.components.js"></script>
+</body>
+
+</html>

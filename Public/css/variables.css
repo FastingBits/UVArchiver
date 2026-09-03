@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "Hanken Grotesk Regular";
+  src: url("../fonts/HankenGrotesk-Regular.ttf") format("truetype");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk Bold";
+  src: url("../fonts/HankenGrotesk-Bold.ttf") format("truetype");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk SemiBold";
+  src: url("../fonts/HankenGrotesk-SemiBold.ttf") format("truetype");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk Italic";
+  src: url("../fonts/HankenGrotesk-Italic.ttf") format("truetype");
+  font-style: normal;
+}
+
+:root {
+  /* Color Palette - Design Tokens */
+  --primary-color: #005BAB;
+  --primary-color-accent: #0376FF;
+  --primary-color-clear: #81b7fa;
+  --primary-color-dark: #011734;
+  --primary-color-light: #ACD1FF;
+
+  --secondary-color: #23ae28;
+  --secondary-color-accent: #37c760;
+  --secondary-color-dark: #0d450f;
+  --secondary-color-light: #78f89c;
+
+  --accent-color: #E2E2F0;
+  --background: #F1F1F1;
+  --background-light: #fbfbfb;
+  --background-dark: #000000;
+
+  --text-light: #f2f2f2;
+  --text-dark: #000000;
+  --hover-color: #dadada;
+  --border-color: #d0d0d0;
+
+  --danger-color: #ec4d4d;
+  --danger-hover-color: #d62929;
+
+  /* Typography */
+  --font: "Hanken Grotesk Regular", sans-serif;
+  --font-bold: "Hanken Grotesk Bold", sans-serif;
+  --font-semi-bold: "Hanken Grotesk SemiBold", sans-serif;
+  --font-italic: "Hanken Grotesk Italic", sans-serif;
+}
+
+/* CSS Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--background);
+  color: var(--text-dark);
+}

@@ -1,0 +1,119 @@
+ <div class="table-container">
+        <table class="doc-table">
+          <caption>Archivos de este departamento</caption>
+          <thead>
+            <tr>
+              <th>NOMBRE DEL ARCHIVO</th>
+              <th>FECHA DE SUBIDA</th>
+              <th>PROPIETARIO</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="documentTableBody">
+            <% if (documentos && documentos.length> 0) { %>
+              <% documentos.forEach(function(doc) { %>
+                <tr data-date="<%= new Date(doc.fecha_creacion).toISOString().split('T')[0] %>">
+                  <td class="file-cell">
+                    <div class="file-icon" data-type="<%= doc.nombre.split('.').pop().toLowerCase() %>">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-file-text">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                        <path d="M9 9l1 0" />
+                        <path d="M9 13l6 0" />
+                        <path d="M9 17l6 0" />
+                      </svg>
+                    </div>
+                    <div class="file-info">
+                      <div class="file-name">
+                        <%= doc.nombre %>
+                      </div>
+                      <div class="file-size" style="display: flex; align-items: center; gap: 6px;">
+                        <span><%= doc.nombre.split('.').pop().toUpperCase() %> Documento</span>
+                        <% if (doc.privado === 1 || doc.privado === true) { %>
+                          <span style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; background: rgba(220, 38, 38, 0.1); color: #dc2626; font-weight: 600;">
+                            <i class="fas fa-lock" style="font-size: 0.65rem;"></i> Confidencial
+                          </span>
+                        <% } else { %>
+                          <span style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; background: rgba(35, 174, 40, 0.1); color: #16a34a; font-weight: 600;">
+                            <i class="fas fa-globe" style="font-size: 0.65rem;"></i> Público
+                          </span>
+                        <% } %>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="date-cell">
+                    <%= new Date(doc.fecha_creacion).toLocaleDateString('es-ES', { year: 'numeric' , month: 'long' ,
+                      day: '2-digit' }) %>
+                  </td>
+                  <td class="owner-cell">
+                    <%= doc.subido_por %>
+                  </td>
+                  <td class="actions-cell">
+                    <button style="display: inline-flex; border: solid 1px white; align-items: center; justify-content: center; text-decoration: none; width: 32px; height: 32px; border-radius: 6px; background-color: var(--primary-color-accent); color: var(--text-light); margin-right: 4px;" data-target="modal-container-2"
+                      onclick="verPDF('/api/documentos/ver/<%= doc.id_documento %>')"
+                      style="margin-right: 4px; padding: 6px 10px; background-color: var(--primary-color-accent);">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                      </svg>
+                    </button>
+                    <% if (user && user.rol !==4) { %>
+                      <a title="Descargar" href="/api/documentos/descargar/<%= doc.id_documento %>"
+                        class="action-btn download-btn"
+                        style="margin-right: 4px; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background-color: var(--secondary-color); color: var(--text-light); text-decoration: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M12 4l0 12" />
+                        </svg>
+                      </a>
+                      <% } %>
+                        <% if (viewScope==='own' && user && user.rol !==4) { %>
+                          <button title="Editar Documento" class="action-btn edit-btn open-modal-button"
+                            data-target="modal-container-edit-doc"
+                            onclick="openEditDocModal('<%= doc.id_documento %>', '<%= doc.nombre.replace(/'/g, "\\'") %>', <%= doc.privado === 1 || doc.privado === true ? 1 : 0 %>)"
+                            style="margin-right: 4px; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background-color: var(--primary-color-accent); color: var(--text-light); border: none; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                              class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                              <path d="M13.5 6.5l4 4" />
+                            </svg>
+                          </button>
+                          <button title="Eliminar" class="action-btn delete-btn"
+                            onclick="deleteDocumento('<%= doc.id_documento %>')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                              fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-trash">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                              <path
+                                d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007zm-10 4a1 1 0 0 0 -1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0 -1 -1m4 0a1 1 0 0 0 -1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0 -1 -1" />
+                              <path
+                                d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005z" />
+                            </svg>
+                          </button>
+                          <% } %>
+                  </td>
+                </tr>
+                <% }); %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="4" style="text-align: center; padding: 20px; color: var(--text-dark); opacity: 0.7;">
+                        No hay documentos registrados en este departamento.
+                      </td>
+                    </tr>
+                    <% } %>
+          </tbody>
+        </table>
+        <% const paginationBaseUrl = viewScope === 'global' ? ('/documentos/departamento/' + idDepartamento) : '/documentos'; %>
+        <%- include('../components/pagination.ejs', { pagination: pagination, baseUrl: paginationBaseUrl }) %>
+      </div>

@@ -1,0 +1,13 @@
+<iframe id="pdfFrame" src="" frameborder="0"></iframe>
+
+<script>
+  function verPDF(url) {
+    const frame = document.getElementById('pdfFrame');
+    if (frame) frame.src = url;
+  }
+
+  function cerrarPDF() {
+    const frame = document.getElementById('pdfFrame');
+    if (frame) frame.src = '';
+  }
+</script>

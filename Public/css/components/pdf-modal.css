@@ -1,0 +1,76 @@
+/* PDF Viewer Modal Component Styles */
+
+.pdf-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.pdf-modal-content {
+  position: relative;
+  width: 80vw;
+  height: 90vh;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pdf-modal-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 8px 16px;
+  border-radius: 10px 10px 0 0;
+  gap: 10px;
+}
+
+.pdf-close,
+.pdf-download {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: color 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pdf-close:hover,
+.pdf-download:hover {
+  color: #007bff;
+}
+
+#pdfFrame {
+  width: 100%;
+  height: 90dvh;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  flex: 1;
+}
+
+/* Responsive Modal Adjustments */
+@media (max-width: 768px) {
+  .pdf-modal-content {
+    width: 96vw;
+    height: 82vh;
+    border-radius: 8px;
+  }
+
+  .pdf-modal-header {
+    padding: 8px 10px;
+  }
+}

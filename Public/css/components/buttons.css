@@ -1,0 +1,239 @@
+/* Buttons and Action Control Styles */
+
+/* Primary Dashboard Header Button */
+.title-btn {
+  width: auto;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(106, 29, 51, 0.07);
+  transition:
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  background: var(--secondary-color-accent);
+  color: #fff;
+}
+
+.title-btn:hover,
+.title-btn:focus {
+  background: var(--secondary-color);
+  color: var(--text-light);
+}
+
+/* Document Table Actions */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.view-btn {
+  background: #eff6ff;
+  color: #1e40af;
+  border-color: rgba(30, 64, 175, 0.1);
+}
+
+.view-btn:hover {
+  background: #dbeafe;
+}
+
+.download-btn {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: rgba(21, 128, 61, 0.1);
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.download-btn:hover {
+  background: #dcfce7;
+}
+
+.delete-btn {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: rgba(220, 38, 38, 0.1);
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+}
+
+/* Card Button Groups */
+.card-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.card-btns a {
+  text-align: center;
+}
+
+.card-btn {
+  width: auto;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  background: #eee;
+  color: var(--primary-color);
+  box-shadow: 0 1px 3px rgba(106, 29, 51, 0.07);
+  transition:
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+}
+
+.card-btn:hover,
+.card-btn:focus {
+  background: #fff;
+  color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(106, 29, 51, 0.15);
+}
+
+.card-btn.download {
+  background: var(--secondary-color-accent);
+  color: #fff;
+}
+
+.card-btn.download:hover,
+.card-btn.download:focus {
+  background: var(--secondary-color);
+  color: var(--text-light);
+}
+
+.card-btn.view {
+  background: var(--primary-color-accent);
+  color: #fff;
+}
+
+.card-btn.view:hover,
+.card-btn.view:focus {
+  background: var(--primary-color);
+  color: var(--text-light);
+}
+
+.card-btn.delete {
+  background: var(--danger-color);
+  color: #fff;
+}
+
+.card-btn.delete:hover,
+.card-btn.delete:focus {
+  background: var(--danger-hover-color);
+  color: var(--text-light);
+}
+
+/* Ripple effect */
+.card-btn:active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(106, 29, 51, 0.08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.4s linear;
+}
+
+.outline-btn {
+  width: fit-content;
+  min-width: 50px;
+  max-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 5px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.outline-btn:hover {
+  color: var(--primary-color-accent);
+}
+
+@keyframes ripple {
+  to {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+
+/* Responsive Buttons */
+@media (max-width: 768px) {
+  .title-btn p {
+    display: none;
+  }
+
+  .card-btns {
+    gap: 8px;
+  }
+
+  .card-btn {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-btns {
+    gap: 6px;
+  }
+
+  .card-btn {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    min-height: 32px;
+  }
+}

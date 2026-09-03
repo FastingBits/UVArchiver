@@ -1,0 +1,42 @@
+<form class="form-documento" id="form-documento">
+  <div class="form-grid">
+    <div class="form-field full">
+      <label for="nombre">Nombre del documento</label>
+      <input type="text" id="nombre" name="nombre" maxlength="100" placeholder="Ej. Contrato de servicios 2026"
+        required>
+    </div>
+
+    <div class="form-field full">
+      <label for="privado">¿Este documento es privado?</label>
+      <input type="checkbox" name="privado" id="privado" checked>
+    </div>
+
+
+    <div class="form-field full">
+      <label>Carga de archivo</label>
+      <label for="documento" class="drop-zone" id="dropZone">
+        <div class="drop-zone__prompt">
+          <i class="fas fa-cloud-upload-alt drop-zone__icon"></i>
+          <p class="drop-zone__text">Arrastra y suelta tu archivo aquí o <span class="drop-zone__browse">haz clic para
+              buscar</span></p>
+          <span class="drop-zone__filename" id="fileName">Ningún archivo seleccionado</span>
+        </div>
+        <input type="file" id="documento" name="documento" required style="display: none;">
+      </label>
+    </div>
+    <div class="submit-container">
+      <button type="submit" class="title-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+          <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+          <path d="M14 4l0 4l-6 0l0 -4" />
+        </svg>
+        &nbsp;Registrar Documento
+      </button>
+    </div>
+  </div>
+</form>
+<script src="/js/components/formularioDocumentos.js"></script>

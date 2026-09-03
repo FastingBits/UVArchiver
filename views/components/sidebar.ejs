@@ -1,0 +1,54 @@
+<!-- Mobile Top Header Bar -->
+<div class="mobile-header">
+  <div class="mobile-logo" onclick="location.href='/'">
+    <span style="color:var(--primary-color-accent);">U</span><span style="color:var(--secondary-color);">V</span>
+    Archiver
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar collapsed" id="sidebar">
+  <div class="back-sidebar">
+  </div>
+  <div class="logo" onclick="location.href='/'">
+    <span style="color:var(--primary-color-accent);">U</span>
+    <span style="color:var(--secondary-color);">V</span>
+    Archiver
+  </div>
+  <ul class="nav">
+    <li><a href="/" title="Inicio"><i class="fas fa-home"></i><span class="text">Inicio</span></a></li>
+
+    <% if (user && (user.rol===1 || user.rol===2)) { %>
+      <li><a href="/usuarios" title="Usuarios"><i class="fas fa-user"></i><span class="text">Usuarios</span></a></li>
+      <% } %>
+
+        <% if (user && user.rol===1) { %>
+          <li><a href="/departamentos" title="Departamentos"><i class="fas fa-building"></i><span
+                class="text">Departamentos</span></a></li>
+          <% } %>
+
+            <% if (user && user.rol<=4 && user.id_departamento !==1) { %>
+              <li><a href="/documentos" title="Documentos"><i class="fas fa-file-alt"></i><span
+                    class="text">Documentos</span></a></li>
+              <% } %>
+  </ul>
+  <ul class="footer">
+    <li class="profile" style="width: 100%;"><a href="/profile" title="Perfil"><i
+          class="fa-solid fa-circle-user"></i><span style="font-family: var(--font-bold);" class="text">
+          <%= user.nombre %>
+            <p style="font-size: 0.7rem; width: 100%;">
+              <%= user.correo %>
+            </p>
+        </span>
+      </a>
+    </li>
+    <li class="toggle-logout"><a href="/api/auth/logout" title="Cerrar sesión"><i class="fas fa-sign-out-alt"></i></a>
+    </li>
+  </ul>
+</div>
+
+<!-- Botón de toggle -->
+<div class="toggle-btn" id="toggleBtn" role="button" aria-label="Abrir menu" aria-expanded="false" tabindex="0"></div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="/js/utils/toast.js"></script>

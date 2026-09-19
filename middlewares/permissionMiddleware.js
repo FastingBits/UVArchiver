@@ -1,4 +1,4 @@
-const { pool } = require('../config/db.js');
+const { permissionRepository } = require('../repositories');
 
 /**
  * Middleware para verificar si el usuario tiene permiso para realizar una acción
@@ -17,18 +17,10 @@ const checkPermission = (permisoRequerido) => {
     const idUsuario = req.session.user.id_usuario;
 
     try {
-      // 2. Verificar en la base de datos si el rol del usuario posee la acción
-      const query = `
-        SELECT 1 
-        FROM usuarios u
-        INNER JOIN rol_acciones ra ON u.id_rol = ra.id_rol
-        INNER JOIN acciones a ON ra.id_accion = a.id_accion
-        WHERE u.id_usuario = $1 AND a.nombre = $2 AND u.deleted_at IS NULL
-      `;
+      // 2. Verificar si el usuario posee la acción requerida mediante el repositorio
+      const authorized = await permissionRepository.hasPermission(idUsuario, permisoRequerido);
 
-      const result = await pool.query(query, [idUsuario, permisoRequerido]);
-
-      if (result.rows.length > 0) {
+      if (authorized) {
         return next(); // Usuario autorizado
       }
 

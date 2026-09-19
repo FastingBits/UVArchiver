@@ -1,12 +1,16 @@
 const { pool } = require('../config/db.js');
+const mysqlAuthRepository = require('../repositories/mysql/auth.repository.js');
+const pgAuthRepository = require('../repositories/pg/auth.repository.js');
 const bcrypt = require('bcryptjs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 async function main() {
     try {
         const user = {
-            nombre: 'system',
-            apellido_paterno: 'admin',
-            apellido_materno: 'system',
+            nombre: 'System',
+            apellido_paterno: 'Admin',
+            apellido_materno: 'User',
             correo: 'systemadmin@uv.mx',
             contrasena: '123456789',
             id_rol: 1,
@@ -18,35 +22,23 @@ async function main() {
         const hash = await bcrypt.hash(user.contrasena, salt);
         user.contrasena = hash;
 
-        const query = `
-            INSERT INTO usuarios (
-                nombre, apellido_paterno, apellido_materno, correo, contrasena, pertenece_a_institucion, id_rol, id_departamento
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-            ON CONFLICT (correo) DO UPDATE SET
-                nombre = EXCLUDED.nombre,
-                apellido_paterno = EXCLUDED.apellido_paterno,
-                apellido_materno = EXCLUDED.apellido_materno,
-                contrasena = EXCLUDED.contrasena,
-                pertenece_a_institucion = EXCLUDED.pertenece_a_institucion,
-                id_rol = EXCLUDED.id_rol,
-                id_departamento = EXCLUDED.id_departamento
-            RETURNING id_usuario
-        `;
-        const result = await pool.query(query, [
-            user.nombre,
-            user.apellido_paterno,
-            user.apellido_materno,
-            user.correo,
-            user.contrasena,
-            user.pertenece_a_institucion,
-            user.id_rol,
-            user.id_departamento
-        ]);
+        let createdUser;
+        let idUsuario;
+        let checkUser;
+        if (process.env.DB_TYPE === 'mysql') {
+            console.log('Usuario creado en mysql');
+            createdUser = await mysqlAuthRepository.createUser(user);
+            idUsuario = createdUser.id_usuario;
+            checkUser = await mysqlAuthRepository.getUserById(idUsuario);
+        } else if (process.env.DB_TYPE === 'pg') {
+            console.log('Usuario creado en postgres');
+            createdUser = await pgAuthRepository.createUser(user);
+            idUsuario = createdUser.id_usuario;
+            checkUser = await pgAuthRepository.getUserById(idUsuario);
+        }
 
-        const idUsuario = result.rows[0].id_usuario;
-        const checkUser = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [idUsuario]);
         console.log('Usuario sembrado exitosamente:');
-        console.log(JSON.stringify(checkUser.rows[0], null, 2));
+        console.log(JSON.stringify(checkUser, null, 2));
         await pool.end();
         process.exit(0);
     } catch (error) {
